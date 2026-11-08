@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>wallpaper.in – Discover. Upload. Download. Share.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Free HD wallpapers. Upload, search, download. No account required.">
+<style>
+:root{--bg:#fff;--fg:#000;--mut:#666;--line:#ddd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#000;--fg:#fff;--mut:#999;--line:#333}}
+:root[data-theme=dark]{--bg:#000;--fg:#fff;--mut:#999;--line:#333}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 Georgia,'Times New Roman',serif}
+button,input,select,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--fg);border-radius:0;padding:10px 14px}
+button{cursor:pointer;transition:.2s}button:hover{background:var(--fg);color:var(--bg)}
+button.solid{background:var(--fg);color:var(--bg)}button.solid:hover{opacity:.8}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 18px;z-index:5;flex-wrap:wrap}
+.logo{font-weight:700;font-size:20px;letter-spacing:1px;cursor:pointer}
+nav{display:flex;gap:6px;flex-wrap:wrap}nav button{border-color:transparent;padding:6px 10px}
+.hero{text-align:center;padding:48px 18px 28px;max-width:760px;margin:auto}
+h1{font-size:clamp(28px,6vw,48px);line-height:1.1;margin:0 0 12px}.sub{color:var(--mut);margin:0 0 22px}
+.sw{position:relative;display:flex;gap:8px}.sw input{flex:1;font-size:17px}
+#sug{position:absolute;top:100%;left:0;right:0;background:var(--bg);border:1px solid var(--fg);text-align:left;z-index:6;display:none}
+#sug div{padding:9px 14px;cursor:pointer}#sug div:hover{background:var(--fg);color:var(--bg)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 18px;scrollbar-width:none}
+.chip{white-space:nowrap;padding:6px 14px;border:1px solid var(--fg);cursor:pointer;font-size:13px}.chip.on{background:var(--fg);color:var(--bg)}
+section{padding:14px 18px;max-width:1300px;margin:auto}h2{font-size:20px;margin:6px 0 12px;border-bottom:1px solid var(--line);padding-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}@media(min-width:1100px){.grid{grid-template-columns:repeat(5,1fr)}}
+.card{position:relative;cursor:pointer;border:1px solid var(--line);overflow:hidden;aspect-ratio:3/4;background:var(--line)}
+.card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}.card:hover img{transform:scale(1.05)}
+.card .t{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;background:linear-gradient(transparent,#000c);color:#fff;font-size:13px}
+.ov{position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto;display:none;padding:calc(14px + env(safe-area-inset-top,0px)) 18px 30px}
+.ov.on{display:block}.wrap{max-width:900px;margin:auto}
+.big{width:100%;max-height:70vh;object-fit:contain;background:var(--line);cursor:zoom-in}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.row>*{flex:1;min-width:120px}
+.meta{color:var(--mut);font-size:14px}.tag{display:inline-block;border:1px solid var(--line);padding:1px 8px;margin:2px;font-size:12px;cursor:pointer}
+.up{border:1px dashed var(--fg);padding:26px;text-align:center;cursor:pointer;margin:12px 0}
+.item{display:flex;gap:10px;border:1px solid var(--line);padding:8px;margin:8px 0;flex-wrap:wrap}.item img{width:90px;height:90px;object-fit:cover}.item .f{flex:1;min-width:180px;display:grid;gap:6px}
+.bar{height:4px;background:var(--line)}.bar i{display:block;height:100%;background:var(--fg);width:0;transition:.2s}
+#fs{position:fixed;inset:0;background:#000;z-index:40;display:none;align-items:center;justify-content:center}#fs.on{display:flex}#fs img{max-width:100%;max-height:100%}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 18px;z-index:60;display:none}
+footer{text-align:center;color:var(--mut);padding:30px 18px;border-top:1px solid var(--line);margin-top:30px;font-size:13px}
+.empty{text-align:center;color:var(--mut);padding:30px}
+.fv{position:absolute;top:6px;right:6px;background:#000a;color:#fff;border:0;padding:4px 10px;font-size:16px}
+#mk{position:fixed;inset:0;background:#000d;z-index:45;display:none;align-items:center;justify-content:center}#mk.on{display:flex}
+</style></head><body>
+<header><div class="logo" onclick="home()">wallpaper.in</div>
+<nav><button onclick="home()">Home</button><button onclick="go('explore')">Explore</button><button onclick="go('cats')">Categories</button><button onclick="document.getElementById('q').focus();scrollTo(0,0)">Search</button><button onclick="favs()">♥ Favourites</button><button onclick="theme()" aria-label="Toggle theme">◐</button><button class="solid" onclick="openUp()">Upload Wallpaper</button></nav></header>
+
+<div class="hero"><h1>Discover the World's Best HD Wallpapers</h1>
+<p class="sub">Explore beautiful HD wallpapers, upload your favourite images, and download them for free. No account required.</p>
+<div class="sw"><input id="q" placeholder="Search wallpapers, tags, categories, colour, orientation…" autocomplete="off"><button class="solid" onclick="doSearch()">Search</button><div id="sug"></div></div>
+<div id="pop" style="margin-top:10px"></div></div>
+<div class="chips" id="cats"></div>
+<div id="main"></div>
+<footer>wallpaper.in · Unlimited Wallpapers. Unlimited Creativity. Always Free.<br>Copyright complaints: use “Report” on any wallpaper.</footer>
+
+<div class="ov" id="det"><div class="wrap" id="detc"></div></div>
+<div class="ov" id="upl"><div class="wrap"><div style="display:flex;justify-content:space-between"><h2 style="border:0">Upload Wallpapers</h2><button onclick="closeOv()">Close ✕</button></div>
+<div class="up" onclick="document.getElementById('fi').click()">Tap to choose images (JPG, PNG, WEBP · max 15 MB each)</div>
+<input type="file" id="fi" accept="image/jpeg,image/png,image/webp" multiple hidden><div id="list"></div>
+<button class="solid" id="sub" style="width:100%;margin-top:10px">Upload All</button><p class="meta" id="umsg"></p></div></div>
+<div id="fs" onclick="this.classList.remove('on')"><img id="fsi" alt=""></div><div id="mk" onclick="this.classList.remove('on')"></div><div id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const CATS=["Nature","Mountains","Animals","Cars","Bikes","Technology","Space","Abstract","Minimalist","Anime","Gaming","Sports","Movies","Photography","Architecture","Flowers","Ocean","Aesthetic","Dark Wallpapers","4K Wallpapers","HD Mobile Wallpapers","Hindu Gods and Goddesses","Artistic Wallpapers","Black and White Wallpapers"];
+const SB=supabase.createClient('https://qjtthyshbxunoocleaft.supabase.co','sb_publishable_jniqgQ8P9rEU5zO5Xmc3NQ_GSNIG7Cy'),db=true,assets=true,user=null,dl={save:o=>{const a=document.createElement('a');a.href=URL.createObjectURL(o.data);a.download=o.filename;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);return Promise.resolve()}};let W=[],cat='',query='',sort='new',files=[],shown=24,loaded=false,fav=false;
+const $=id=>document.getElementById(id);
+const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2800)}
+function el(tag,props,kids){const e=document.createElement(tag);Object.assign(e,props||{});(kids||[]).forEach(k=>e.append(k));return e}
+function size(b){return b>1e6?(b/1e6).toFixed(1)+' MB':Math.round(b/1e3)+' KB'}
+function resName(w,h){const m=Math.max(w,h);return m>=3800?'4K':m>=2500?'2K':m>=1900?'Full HD':m>=1200?'HD':'SD'}
+function orient(w,h){return w>h?'landscape':w<h?'portrait':'square'}
+function words(w){return [w.title,w.cat,(w.tags||[]),orient(w.w,w.h),resName(w.w,w.h),w.desc,w.color||''].flat().join(' ').toLowerCase()}
+function score(w,terms){let s=0;const hay=words(w),t=(w.title||'').toLowerCase();for(const x of terms){if(t.includes(x))s+=4;if((w.tags||[]).some(g=>g.toLowerCase().includes(x)))s+=3;if((w.cat||'').toLowerCase().includes(x))s+=3;if(hay.includes(x))s+=1;else return 0}return s}
+function results(){let r=W.filter(w=>!w.hidden);if(cat)r=r.filter(w=>w.cat===cat);if(query){const t=query.toLowerCase().split(/\s+/).filter(Boolean);r=r.map(w=>[w,score(w,t)]).filter(a=>a[1]>0).sort((a,b)=>b[1]-a[1]).map(a=>a[0])}else r=sorted(r,sort);return r}
+function trend(w){return (w.dl||0)*2+(w.views||0)+Math.max(0,10-(Date.now()-w.at)/864e5)}
+function sorted(r,s){return [...r].sort((a,b)=>s==='dl'?(b.dl||0)-(a.dl||0):s==='trend'?trend(b)-trend(a):b.at-a.at)}
+function isFav(id){return ls.get('favs',[]).includes(id)}
+function toggleFav(id){let f=ls.get('favs',[]);f=f.includes(id)?f.filter(x=>x!==id):[id,...f];ls.set('favs',f)}
+function card(w){const h=el('button',{className:'fv',textContent:isFav(w.id)?'♥':'♡',ariaLabel:'Favourite',onclick:e=>{e.stopPropagation();toggleFav(w.id);h.textContent=isFav(w.id)?'♥':'♡'}});const c=el('div',{className:'card',tabIndex:0},[el('img',{src:w.url,alt:w.title,loading:'lazy'}),el('div',{className:'t',textContent:w.title}),h]);c.onclick=()=>show(w.id);c.onkeydown=e=>{if(e.key==='Enter')show(w.id)};return c}
+function sec(title,list,more){if(!list.length)return null;const s=el('section',{},[el('h2',{textContent:title}),el('div',{className:'grid'},list.map(card))]);return s}
+function render(){const m=$('main');m.replaceChildren();
+ if(!loaded){m.append(el('div',{className:'empty',textContent:'Loading wallpapers…'}));return}
+ const live=W.filter(w=>!w.hidden);
+ if(!live.length){m.append(el('div',{className:'empty',textContent:'No wallpapers yet. Be the first — tap “Upload Wallpaper”.'}));return}
+ if(fav&&!query&&!cat){const l=ls.get('favs',[]).map(i=>live.find(w=>w.id===i)).filter(Boolean);const s=sec('♥ Your Favourites ('+l.length+')',l)||el('div',{className:'empty',textContent:'No favourites yet. Tap ♡ on any wallpaper.'});if(l.length)s.append(el('div',{className:'row'},[el('button',{className:'solid',textContent:'⬇ Download all (zip)',onclick:()=>zipAll(l)})]));m.append(s);return}
+ if(query||cat){const r=results();const bar=el('section',{},[el('h2',{textContent:(query?'Results for “'+query+'”':cat)+' ('+r.length+')'})]);
+  if(!query){const s=el('select',{onchange:e=>{sort=e.target.value;render()}},[['new','Newest'],['dl','Most downloaded'],['trend','Trending']].map(o=>el('option',{value:o[0],textContent:o[1],selected:sort===o[0]})));bar.append(s)}
+  if(!r.length){bar.append(el('div',{className:'empty'},[el('div',{textContent:'No wallpapers match. Try:'}),...CATS.slice(0,6).map(c=>el('span',{className:'tag',textContent:c,onclick:()=>{query=c;$('q').value=c;render()}}))]))}
+  else{bar.append(el('div',{className:'grid'},r.slice(0,shown).map(card)));if(r.length>shown)bar.append(el('div',{style:'text-align:center;margin:14px'},[el('button',{textContent:'Load more',onclick:()=>{shown+=24;render()}})]))}
+  m.append(bar);return}
+ {const ds=[...live].sort((a,b)=>a.id<b.id?-1:1),d=ds[Math.floor(Date.now()/864e5)%ds.length];m.append(el('section',{},[el('h2',{textContent:'Wallpaper of the Day'}),el('div',{className:'grid',style:'grid-template-columns:repeat(auto-fit,minmax(200px,340px))'},[card(d)])]))}
+ const pref=ls.get('pref',{}),top=Object.entries(pref).sort((a,b)=>b[1]-a[1]).slice(0,3).map(a=>a[0]);
+ const seen=ls.get('seen',[]);
+ const rec=live.filter(w=>top.includes(w.cat)&&!seen.includes(w.id));
+ [['Recommended for You',top.length?sorted(rec,'trend').slice(0,10):[]],['Trending Wallpapers',sorted(live,'trend').slice(0,10)],['Most Downloaded',sorted(live.filter(w=>w.dl),'dl').slice(0,10)],['Recently Uploaded',sorted(live,'new').slice(0,10)],['Recently Viewed',seen.map(i=>live.find(w=>w.id===i)).filter(Boolean).slice(0,10)],['You May Also Like',live.filter(w=>!top.length||top.includes(w.cat)).sort(()=>.5-Math.random()).slice(0,10)],['Collection: Best of Nature',live.filter(w=>w.cat==='Nature').slice(0,10)],['Collection: Top 4K',live.filter(w=>resName(w.w,w.h)==='4K').slice(0,10)],['Collection: Dark & Minimal',live.filter(w=>['Dark Wallpapers','Minimalist','Black and White Wallpapers'].includes(w.cat)).slice(0,10)],['Collection: Phone Picks',live.filter(w=>orient(w.w,w.h)==='portrait').slice(0,10)]].forEach(([t,l])=>{const s=sec(t,l);if(s)m.append(s)})}
+function popular(){const s=ls.get('searches',{}),tags={};W.forEach(w=>(w.tags||[]).forEach(t=>tags[t]=(tags[t]||0)+1));
+ const p=[...Object.entries(s).sort((a,b)=>b[1]-a[1]).map(a=>a[0]),...Object.entries(tags).sort((a,b)=>b[1]-a[1]).map(a=>a[0])].filter((v,i,a)=>a.indexOf(v)===i).slice(0,8);
+ $('pop').replaceChildren(...(p.length?[el('span',{className:'meta',textContent:'Popular: '})]:[]),...p.map(t=>el('span',{className:'tag',textContent:t,onclick:()=>{$('q').value=t;doSearch()}})))}
+function doSearch(){fav=false;query=$('q').value.trim();$('sug').style.display='none';shown=24;if(query){const s=ls.get('searches',{});s[query.toLowerCase()]=(s[query.toLowerCase()]||0)+1;ls.set('searches',s)}render();popular();scrollTo(0,$('q').offsetTop)}
+$('q').addEventListener('input',e=>{const v=e.target.value.trim().toLowerCase(),b=$('sug');if(!v){b.style.display='none';query='';render();return}
+ const pool=[...new Set([...CATS,...W.flatMap(w=>[w.title,...(w.tags||[])]),...Object.keys(ls.get('searches',{}))])].filter(x=>x&&x.toLowerCase().includes(v)).slice(0,6);
+ b.replaceChildren(...pool.map(x=>el('div',{textContent:x,onclick:()=>{$('q').value=x;doSearch()}})));b.style.display=pool.length?'block':'none';query=v;shown=24;render()});
+$('q').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()});
+function chips(){const c=$('cats');c.replaceChildren(el('div',{className:'chip'+(!cat?' on':''),textContent:'All',onclick:()=>{cat='';fav=false;render();chips()}}),...CATS.map(n=>el('div',{className:'chip'+(cat===n?' on':''),textContent:n,onclick:()=>{cat=n;shown=24;render();chips()}})))}
+function home(){fav=false;cat='';query='';$('q').value='';render();chips();scrollTo(0,0)}
+function go(w){if(w==='explore'){cat='';query='';sort='new';$('q').value='';const r=sorted(W.filter(x=>!x.hidden),'new');$('main').replaceChildren(sec('Explore – all wallpapers',r.slice(0,200))||el('div',{className:'empty',textContent:'Nothing yet.'}));scrollTo(0,$('main').offsetTop-60)}else $('cats').scrollIntoView({behavior:'smooth'})}
+function closeOv(){document.querySelectorAll('.ov').forEach(o=>o.classList.remove('on'));document.title='wallpaper.in – Discover. Upload. Download. Share.'}
+function show(id){const w=W.find(x=>x.id===id);if(!w)return;const d=$('detc');
+ const pref=ls.get('pref',{});pref[w.cat]=(pref[w.cat]||0)+1;ls.set('pref',pref);ls.set('seen',[id,...ls.get('seen',[]).filter(x=>x!==id)].slice(0,20));
+ SB.rpc('add_view',{wid:id});
+ document.title=w.title+' – wallpaper.in';
+ const rel=W.filter(x=>x.id!==id&&!x.hidden&&(x.cat===w.cat||(x.tags||[]).some(t=>(w.tags||[]).includes(t)))).slice(0,8);
+ const img=el('img',{className:'big',src:w.url,alt:w.title});img.onclick=()=>{$('fsi').src=w.url;$('fs').classList.add('on')};
+ const sizes=[['Original',0],['4K',3840],['2K',2560],['Full HD',1920],['HD',1280]];
+ d.replaceChildren(el('div',{className:'row'},[el('button',{textContent:'← Back',onclick:closeOv})]),img,
+  el('h2',{textContent:w.title,style:'border:0'}),
+  el('p',{className:'meta',textContent:`${w.w}×${w.h} · ${resName(w.w,w.h)} · ${orient(w.w,w.h)} · ${(w.type||'').replace('image/','').toUpperCase()} · ${size(w.size||0)} · ${w.cat} · ${w.dl||0} downloads`}),
+  el('p',{textContent:w.desc||''}),el('div',{},(w.tags||[]).map(t=>el('span',{className:'tag',textContent:'#'+t,onclick:()=>{closeOv();$('q').value=t;doSearch()}}))),
+  el('div',{className:'row'},sizes.map(s=>el('button',{className:s[1]?'':'solid',textContent:'⬇ '+s[0],onclick:()=>download(w,s[1])}))),
+  el('div',{className:'row'},[...[['📱 iPhone',1170,2532],['📱 Android',1080,2400],['Tablet',1668,2388],['💻 Desktop',1920,1080]].map(s=>el('button',{textContent:'⬇ '+s[0]+' fit',onclick:()=>fit(w,s[1],s[2])}))]),el('div',{className:'row'},[el('button',{textContent:isFav(w.id)?'♥ Saved':'♡ Favourite',onclick:e=>{toggleFav(w.id);e.target.textContent=isFav(w.id)?'♥ Saved':'♡ Favourite'}}),el('button',{textContent:'Phone preview',onclick:()=>mock(w)}),el('button',{textContent:'Share',onclick:()=>share(w)}),el('button',{textContent:'Copy link',onclick:()=>copy(w)}),el('button',{textContent:'Full screen',onclick:()=>img.click()}),el('button',{textContent:'Report',onclick:()=>report(w)}),...(user&&user.isOwner()?[el('button',{textContent:'Admin: remove',onclick:()=>remove(w)})]:[])]),
+  rel.length?el('div',{},[el('h2',{textContent:'Similar Wallpapers'}),el('div',{className:'grid'},rel.map(card))]):'');
+ $('det').classList.add('on');$('det').scrollTop=0}
+async function download(w,max){try{let blob=await (await fetch(w.url)).blob();const ext=(w.type||'image/jpeg').split('/')[1].replace('jpeg','jpg');
+ if(max&&Math.max(w.w,w.h)>max){const bm=await createImageBitmap(blob),k=max/Math.max(bm.width,bm.height),c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.92))}
+ const name=(w.title||'wallpaper').replace(/[^\w-]+/g,'-')+(max?'-'+max:'')+'.'+(max?'jpg':ext);
+ if(!dl){toast('Download not available here');return}
+ await dl.save({filename:name,data:blob});SB.rpc('add_download',{wid:w.id})}catch(e){if(!e||e.code!=='declined')toast('Download failed')}}
+async function fit(w,tw,th){try{const bm=await createImageBitmap(await (await fetch(w.url)).blob()),c=document.createElement('canvas');c.width=tw;c.height=th;const k=Math.max(tw/bm.width,th/bm.height),dw=bm.width*k,dh=bm.height*k;c.getContext('2d').drawImage(bm,(tw-dw)/2,(th-dh)/2,dw,dh);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.92));await dl.save({filename:(w.title||'wallpaper').replace(/[^\w-]+/g,'-')+'-'+tw+'x'+th+'.jpg',data:b});SB.rpc('add_download',{wid:w.id})}catch(e){if(!e||e.code!=='declined')toast('Download failed')}}
+function mock(w){const m=$('mk'),p=el('div',{style:'width:min(270px,70vw);aspect-ratio:9/19.5;border:8px solid #333;border-radius:36px;background:#000 center/cover;position:relative;color:#fff;text-align:center;overflow:hidden'},[el('div',{style:'margin-top:14%;font-size:54px;font-family:sans-serif;text-shadow:0 2px 8px #0008',textContent:'9:41'}),el('div',{style:'font-size:13px;text-shadow:0 1px 4px #0008',textContent:new Date().toDateString()})]);p.style.backgroundImage='url("'+w.url+'")';m.replaceChildren(p);m.classList.add('on')}
+async function zipAll(l){if(!dl||!window.JSZip){toast('Zip not available');return}toast('Preparing zip…');try{const z=new JSZip();for(const w of l){const b=await (await fetch(w.url)).blob();z.file((w.title||'wallpaper').replace(/[^\w-]+/g,'-')+'-'+w.id.slice(0,4)+'.'+(w.type||'image/jpeg').split('/')[1].replace('jpeg','jpg'),b)}await dl.save({filename:'HD-wallpapers.zip',data:await z.generateAsync({type:'blob'})})}catch(e){if(!e||e.code!=='declined')toast('Zip failed')}}
+function theme(){const r=document.documentElement,d=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=d?'light':'dark';ls.set('theme',r.dataset.theme)}
+function favs(){fav=true;cat='';query='';$('q').value='';render();chips();scrollTo(0,$('main').offsetTop-60)}
+function link(w){return location.href.split('#')[0]}
+async function share(w){const d={title:w.title,text:w.title+' – free HD wallpaper',url:link(w)};try{if(navigator.share)await navigator.share(d);else copy(w)}catch(e){}}
+function copy(w){try{navigator.clipboard.writeText(link(w)).then(()=>toast('Link copied'),()=>toast(link(w)))}catch(e){toast(link(w))}}
+function report(w){if(!db)return;if(!confirm('Report this wallpaper (inappropriate / copyright / spam)?'))return;SB.rpc('report_wallpaper',{wid:w.id}).then(r=>toast(r.error?'Could not report':'Reported. Thank you.'))}
+function remove(w){if(!confirm('Remove permanently?'))return;db.doc('wallpapers/'+w.id).delete().then(()=>{closeOv();toast('Removed')})}
+function openUp(){$('upl').classList.add('on')}
+function cname(i){try{const c=document.createElement('canvas');c.width=c.height=8;const g=c.getContext('2d');g.drawImage(i,0,0,8,8);const d=g.getImageData(0,0,8,8).data;let r=0,gg=0,b=0;for(let k=0;k<d.length;k+=4){r+=d[k];gg+=d[k+1];b+=d[k+2]}r/=64;gg/=64;b/=64;const mx=Math.max(r,gg,b),mn=Math.min(r,gg,b),l=(mx+mn)/2,df=mx-mn;if(mx<50)return 'black';if(mn>205)return 'white';if(df<28)return l<110?'dark gray':'gray';let h;if(mx===r)h=((gg-b)/df+6)%6;else if(mx===gg)h=(b-r)/df+2;else h=(r-gg)/df+4;h*=60;return h<15||h>=345?(l>170?'pink':'red'):h<40?(l<110?'brown':'orange'):h<70?'yellow':h<165?'green':h<200?'cyan blue':h<260?'blue':h<300?'purple':'pink'}catch(e){return ''}}
+$('fi').onchange=async e=>{for(const f of e.target.files){if(!/^image\/(jpeg|png|webp)$/.test(f.type)){toast(f.name+': unsupported type');continue}if(f.size>15e6){toast(f.name+': over 15 MB');continue}
+ const u=URL.createObjectURL(f);const dim=await new Promise(r=>{const i=new Image();i.onload=()=>r([i.naturalWidth,i.naturalHeight,cname(i)]);i.onerror=()=>r([0,0]);i.src=u});if(!dim[0]){toast(f.name+': not a valid image');continue}
+ files.push({f,u,w:dim[0],h:dim[1],color:dim[2]})}e.target.value='';drawList()};
+function drawList(){$('list').replaceChildren(...files.map((x,i)=>{const t=el('input',{placeholder:'Title',value:x.title||x.f.name.replace(/\.\w+$/,''),oninput:e=>x.title=e.target.value}),s=el('select',{onchange:e=>x.cat=e.target.value},CATS.map(c=>el('option',{value:c,textContent:c,selected:x.cat===c}))),g=el('input',{placeholder:'Tags (comma separated)',value:x.tags||'',oninput:e=>x.tags=e.target.value}),d=el('input',{placeholder:'Description',value:x.desc||'',oninput:e=>x.desc=e.target.value});x.title=t.value;x.cat=s.value;x.bar=el('i');
+ return el('div',{className:'item'},[el('img',{src:x.u,alt:''}),el('div',{className:'f'},[t,s,g,d,el('div',{className:'meta',textContent:`${x.w}×${x.h} · ${resName(x.w,x.h)} · ${size(x.f.size)}`}),el('div',{className:'bar'},[x.bar])]),el('button',{textContent:'Remove',onclick:()=>{files.splice(i,1);drawList()}})])}))}
+$('sub').onclick=async()=>{if(!db||!assets){toast('Upload unavailable in this view');return}if(!files.length){toast('Choose images first');return}
+ const last=ls.get('lastUp',0);if(Date.now()-last<8000){toast('Please wait a few seconds between uploads');return}
+ if(files.length>10){toast('Max 10 images at once');return}
+ $('sub').disabled=true;let ok=0;
+ for(const x of files){try{x.bar.style.width='30%';const hash=x.f.size+'-'+x.w+'x'+x.h;if(W.some(w=>w.hash===hash)){$('umsg').textContent='Duplicate skipped: '+x.title;continue}
+  const ext=x.f.type.split('/')[1].replace('jpeg','jpg'),path=crypto.randomUUID()+'.'+ext;const up=await SB.storage.from('wallpapers').upload(path,x.f,{contentType:x.f.type});if(up.error)throw up.error;const a={url:SB.storage.from('wallpapers').getPublicUrl(path).data.publicUrl};x.bar.style.width='80%';
+  const tags=(x.tags||'').split(',').map(t=>t.trim().toLowerCase()).filter(Boolean).slice(0,12);
+  if(/(http|www\.|\.com)/i.test(x.title+x.desc)){$('umsg').textContent='Links not allowed in text';continue}
+  const ins=await SB.from('wallpapers').insert({title:(x.title||'Untitled').slice(0,80),description:(x.desc||'').slice(0,300),category:x.cat,tags,width:x.w,height:x.h,file_size:x.f.size,file_type:x.f.type,image_path:a.url,hash,color:x.color||''});if(ins.error)throw ins.error;x.bar.style.width='100%';ok++}catch(e){$('umsg').textContent='Failed: '+(e&&e.message||'error')}}
+ ls.set('lastUp',Date.now());loadAll();$('sub').disabled=false;files=files.filter(x=>x.bar.style.width!=='100%');drawList();if(ok){$('umsg').textContent='✔ '+ok+' wallpaper(s) uploaded successfully!';toast('Upload successful')}};
+addEventListener('keydown',e=>{if(e.key==='Escape'){closeOv();$('fs').classList.remove('on')}});
+addEventListener('scroll',()=>{if(innerHeight+scrollY>document.body.scrollHeight-400&&(query||cat)&&results().length>shown){shown+=24;render()}},{passive:true});
+{const t=ls.get('theme',null);if(t)document.documentElement.dataset.theme=t}
+chips();render();
+async function loadAll(){const r=await SB.from('wallpapers').select('*').order('created_at',{ascending:false}).limit(1000);if(r.error){loaded=true;$('main').replaceChildren(el('div',{className:'empty',textContent:'Could not load wallpapers.'}));return}
+W=r.data.map(d=>({id:d.id,title:d.title,desc:d.description,cat:d.category,tags:d.tags||[],w:d.width,h:d.height,size:d.file_size,type:d.file_type,url:d.image_path,hash:d.hash,color:d.color,dl:d.downloads,views:d.views,reports:d.reports,hidden:false,at:new Date(d.created_at).getTime()}));loaded=true;render();popular()}
+loadAll();
+</script></body></html>
